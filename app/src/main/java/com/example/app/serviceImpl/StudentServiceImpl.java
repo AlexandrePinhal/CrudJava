@@ -13,31 +13,31 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    /*Fonction retournant toutes les occurrences de l'entité*/
     @Override
     public List<Student> findAll() {
        return studentRepository.findAll();
     }
 
     @Override
-    /*Fonction retournant les occurrences de l'entité en envoyant son id*/
     public Student findById(Long id) {
        return studentRepository.findById(id).orElse(null);
     }
 
-    /*Fonction d'ajout d'une occurence*/
+    @Override
+    public List<Student> findByPromotion(String promotion) {
+        return studentRepository.findByPromotion(promotion);
+    }
+
     @Override
     public Student save(Student student) {
        return studentRepository.save(student);
     }
 
-    /*Fonction de modification d'une occurence*/
     @Override
     public Student update(Student student) {
        return studentRepository.save(student);
     }
 
-    /*Fonction de suppression d'une occurence par id*/
     @Override
     public void deleteById(Long id) {
     studentRepository.deleteById(id);

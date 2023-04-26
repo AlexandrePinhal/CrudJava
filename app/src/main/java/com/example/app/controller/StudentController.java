@@ -32,10 +32,20 @@ public class StudentController {
        try {
            student = studentService.findById(id);
        } catch(Exception e) {
-           // TODO: handle exception
            System.out.println("Erreur " + e.getMessage());
        }
        return student;
+    }
+
+    @RequestMapping(value = "/students/{promotion}", method = RequestMethod.GET)
+    public List<Student> findByPromotion(@PathVariable String promotion){
+        List<Student> students = new ArrayList<>();
+        try {
+            students = studentService.findByPromotion(promotion);
+        } catch(Exception e) {
+            System.out.println("Erreur " + e.getMessage());
+        }
+        return students;
     }
 
     @RequestMapping(value = "/student/save", method = { RequestMethod.GET, RequestMethod.POST }, headers = "Accept=Application/json")
@@ -53,7 +63,6 @@ public class StudentController {
         try {
             student = studentService.update(student);
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println("Erreur " + e.getMessage());
         }
         return student;
@@ -62,6 +71,11 @@ public class StudentController {
 
     @RequestMapping(value = "/student/delete/{id}", method = { RequestMethod.GET, RequestMethod.DELETE }, headers = "Accept=Application/json")
     public void deleteById(@PathVariable Long id) {
-        this.studentService.deleteById(id);
+        Student student = this.studentService.findById(id);
+        if (student != null && !student.delegate) {
+            this.studentService.deleteById(id);
+        } else {
+            System.out.println("L'étudiant ne peut pas être supprimé car il est délégué.");
+        }
     }
 }
